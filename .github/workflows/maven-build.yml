@@ -10,9 +10,9 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest  # Since you are using 'bat' commands
+    runs-on: windows-latest
     env:
-      GIT_REPO: https://github.com/rajadevops2025/mavendemo.git
+      GIT_REPO: rajadevops2025/mavendemo
       GIT_BRANCH: main
 
     steps:
@@ -21,13 +21,13 @@ jobs:
         with:
           repository: ${{ env.GIT_REPO }}
           ref: ${{ env.GIT_BRANCH }}
-          token: ${{ secrets.GITHUB_TOKEN }}  # GitHub automatically provides this
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Maven
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '17'  # Adjust if needed
+          java-version: '17'
           cache: 'maven'
 
       - name: Build with Maven
