@@ -1,0 +1,40 @@
+name: Maven Build and Archive
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest  # Since you are using 'bat' commands
+    env:
+      GIT_REPO: https://github.com/rajadevops2025/mavendemo.git
+      GIT_BRANCH: main
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.GIT_REPO }}
+          ref: ${{ env.GIT_BRANCH }}
+          token: ${{ secrets.GITHUB_TOKEN }}  # GitHub automatically provides this
+
+      - name: Set up Maven
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'  # Adjust if needed
+          cache: 'maven'
+
+      - name: Build with Maven
+        run: mvn clean package
+
+      - name: Archive JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: maven-build-artifacts
+          path: target/*.jar
